@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ECharts Gantt Demo</title>
+  <style>#main { width:800px; height:400px; }</style>
+</head>
+<body>
+  <div id="main"></div>
+ <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="../dist/echarts-gantt.js"></script>
+<script>
+  EChartsGantt.installGanttChart();
+
+  const chart = echarts.init(document.getElementById('main'));
+  chart.setOption({
+    xAxis: { type: 'time' },
+    yAxis: { type: 'category', data: ['任务A','任务B','任务C'] },
+    series: [{
+      type: 'gantt',
+      data: [
+        { name:'任务A', start:'2025-08-01', end:'2025-08-10', y:0, progress:0.6 },
+        { name:'任务B', start:'2025-08-05', end:'2025-08-15', y:1, progress:0.3 },
+        { name:'任务C', start:'2025-08-12', end:'2025-08-20', y:2, progress:0.8 }
+      ]
+    }]
+  });
+</script>
+</body>
+</html>

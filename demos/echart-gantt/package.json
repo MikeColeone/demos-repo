@@ -1,0 +1,28 @@
+{
+  "name": "echarts-gantt",
+  "version": "0.1.0",
+  "description": "A Gantt chart extension for Apache ECharts",
+  "main": "index.js",
+  "author": {
+    "name": "hedx",
+    "email": "coleonemike@gmail.com"
+  },
+  "keywords": ["echarts", "gantt", "chart", "visualization"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MikeColeone/echarts-extension-gantt"
+  },
+  "peerDependencies": {
+    "echarts": ">=5.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "babel-loader": "^9.1.3",
+    "@babel/core": "^7.22.10",
+    "@babel/preset-env": "^7.22.10"
+  },
+  "scripts": {
+    "build": "webpack --mode production"
+  }
+}
