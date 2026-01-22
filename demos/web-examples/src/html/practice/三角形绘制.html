@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>纯CSS三角形与颜色解析</title>
+    <style>
+      /* 定义单个三角形（以右下角三角形为例） */
+      .triangle {
+        width: 0;
+        height: 0;
+        /* 隐藏上边框和左边框，只显示右下边框 */
+        border-width: 100px;
+        border-style: solid;
+        border-color: transparent transparent orangered transparent; /* 透明 透明 橙色 透明 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="triangle"></div>
+  </body>
+</html>

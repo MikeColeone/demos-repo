@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      .success {
+        display: inline-block;
+        padding: 0px 5px 0px 5px;
+        border-radius: 3px;
+        color: white;
+        background-color: red;
+      }
+      .warning {
+        display: inline;
+        padding: 0px 5px 0px 5px;
+        border-radius: 3px;
+        color: white;
+        background-color: rgb(225, 225, 75);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      td,
+      th {
+        padding: 10px;
+        border-bottom: 1px solid black;
+      }
+      tbody tr:nth-child(even) {
+        background-color: aliceblue;
+      }
+      tbody tr:nth-child(odd) {
+        background-color: antiquewhite;
+      }
+
+      table tr a {
+        text-decoration: none;
+      }
+      /* td,
+      th {
+        align-items: center;
+      } */
+      a.change,
+      a.delete {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: red;
+      }
+      table a.change:hover,
+      a.delete:hover {
+        transform: scale(1.1);
+        transition: 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>学生信息</h1>
+    <p>
+      说明:以下为2046级学生名单，共四人，
+      <span class="success">成功加载3人</span>
+      。
+      <span class="warning">警告：列表不包含降级学生</span>
+      。
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>姓名</th>
+          <th>班级</th>
+          <th>Email</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>郭立新</td>
+          <td>软件工程2046级1班</td>
+          <td>guo@example.com</td>
+          <td>
+            <a href="#" class="change">修改</a>
+            <a href="#" class="delete">删除</a>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>黄英</td>
+          <td>软件工程2046级1班</td>
+          <td>huang@example.com</td>
+          <td>
+            <a href="#" class="change">修改</a>
+            <a href="#" class="delete">删除</a>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>吕惠玲</td>
+          <td>软件工程2046级2班</td>
+          <td>lv@example.com</td>
+          <td>
+            <a href="#" class="change">修改</a>
+            <a href="#" class="delete">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

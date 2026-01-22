@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>基于防抖思想设计</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box; /* 将 box-sizing 改为 border-box */
+      }
+      .container {
+        padding: 10px;
+      }
+      input[type="text"] {
+        padding: 5px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <!-- 鼠标点击两秒后转大写 -->
+  <!-- <body>
+    <input type="text" id="myInput" placeholder="两秒后将自动转换大写" />
+
+    <script>
+      // 获取输入框元素
+      const inputElement = document.getElementById('myInput')
+      let timeId = null // 用于存储 setTimeout 的 ID
+
+      const toUpper = function () {
+        inputElement.value = inputElement.value.toUpperCase()
+      }
+      // 添加事件
+      inputElement.addEventListener('input', function () {
+        //通过获取的id清楚之前的延迟
+        clearTimeout(timeId)
+
+        timeId = setTimeout(toUpper, 2000)
+      })
+    </script>
+  </body> -->
+
+  <!-- 修改版 由于使用input会在每一次点击的时候调用函数 造成资源浪费 所以采用点击的方式 -->
+  <body>
+    <input
+      type="text"
+      id="myInput"
+      placeholder="点击输入"
+      onclick="myToUpper()"
+    />
+    <input
+      type="text"
+      id="myInputTest"
+      placeholder="点击输入"
+      onclick="debounceF()"
+    />
+    <script>
+      function myToUpper() {
+        const timeId = setTimeout(function () {
+          clearTimeout(timeId);
+          var inputField = document.getElementById("myInput");
+          inputField.value = inputField.value.toUpperCase();
+        }, 2000);
+      }
+
+      function debounce(fn, delay) {
+        let timer = null;
+        return function () {
+          clearTimeout(timer);
+          timer = setTimeout(fn, delay);
+        };
+      }
+
+      const toUpperF = function () {
+        let inputField = document.getElementById("myInputTest");
+        inputElement.value = inputElement.value.toUpperCase();
+      };
+
+      const debounceF = debounce(toUpperF, 2000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>排序最简版本</title>
+  </head>
+  <body>
+    <ul id="number-list">
+      <li>42</li>
+      <li>7</li>
+      <li>13</li>
+      <li>99</li>
+    </ul>
+  </body>
+  <script>
+    // 1. 获取所有 li 元素
+    const listItems = document.querySelectorAll("#number-list li");
+
+    // 2. 提取文本并转成数字数组
+    const numbers = Array.from(listItems).map((li) => parseInt(li.textContent));
+
+    // 3. 排序
+    numbers.sort((a, b) => a - b);
+
+    // 4. 更新页面显示
+    const ul = document.getElementById("number-list");
+    ul.innerHTML = ""; // 清空原列表
+    numbers.forEach((num) => {
+      const li = document.createElement("li");
+      li.textContent = num;
+      ul.appendChild(li);
+    });
+  </script>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sort Example</title>
+    <style>
+      button {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="sort-price">按价格排序（升序）</button>
+    <button id="sort-sales">按销量排序（升序）</button>
+
+    <ul id="item-list">
+      <li data-price="42" data-sales="100">价格: 42 元，销量: 100 件</li>
+      <li data-price="7" data-sales="300">价格: 7 元，销量: 300 件</li>
+      <li data-price="13" data-sales="150">价格: 13 元，销量: 150 件</li>
+      <li data-price="99" data-sales="80">价格: 99 元，销量: 80 件</li>
+    </ul>
+
+    <script>
+      function createSorter(options) {
+        const {
+          listSelector, // 列表选择器
+          fields, // 排序字段数组
+          buttonConfigs, // 按钮配置 { field, buttonId }
+        } = options;
+
+        const ul = document.querySelector(listSelector);
+        let sortStates = {};
+
+        // 初始化每个字段的排序方向
+        fields.forEach((field) => {
+          sortStates[field] = true; // true 表示升序
+        });
+
+        function sortList(field) {
+          const items = Array.from(ul.querySelectorAll("li"));
+
+          items.sort((a, b) => {
+            const aVal = parseFloat(a.dataset[field]);
+            const bVal = parseFloat(b.dataset[field]);
+            return sortStates[field] ? aVal - bVal : bVal - aVal;
+          });
+
+          ul.innerHTML = "";
+          items.forEach((li) => ul.appendChild(li));
+        }
+
+        // 按钮绑定
+        buttonConfigs.forEach(({ field, buttonId }) => {
+          const btn = document.getElementById(buttonId);
+
+          btn.addEventListener("click", () => {
+            // 切换当前字段排序方向
+            sortStates[field] = !sortStates[field];
+
+            // 排序
+            sortList(field);
+
+            // 更新按钮文本
+            buttonConfigs.forEach(({ field: f, buttonId: id }) => {
+              const text =
+                f === field
+                  ? `按${f === "price" ? "价格" : "销量"}排序（${
+                      sortStates[f] ? "升序" : "降序"
+                    }）`
+                  : `按${f === "price" ? "价格" : "销量"}排序（升序）`;
+              document.getElementById(id).textContent = text;
+
+              if (f !== field) sortStates[f] = true; // 重置其他字段为升序
+            });
+          });
+        });
+      }
+
+      // 调用函数
+      createSorter({
+        listSelector: "#item-list",
+        fields: ["price", "sales"],
+        buttonConfigs: [
+          { field: "price", buttonId: "sort-price" },
+          { field: "sales", buttonId: "sort-sales" },
+        ],
+      });
+    </script>
+  </body>
+</html> -->

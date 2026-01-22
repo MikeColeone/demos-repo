@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>写作过程分析工具</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .container {
+        width: 100%;
+        max-width: 1000px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        margin: 20px 0;
+      }
+      header {
+        background: #4a6fc7;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+      .main-content {
+        display: flex;
+        padding: 0;
+      }
+      .editor-section {
+        flex: 3;
+        padding: 20px;
+        border-right: 1px solid #eee;
+      }
+      .stats-section {
+        flex: 2;
+        padding: 20px;
+        background: #f9f9f9;
+      }
+      .section-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #4a6fc7;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #4a6fc7;
+      }
+      textarea {
+        width: 100%;
+        height: 300px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        resize: none;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #4a6fc7;
+        box-shadow: 0 0 0 2px rgba(74, 111, 199, 0.2);
+      }
+      .stats {
+        margin-bottom: 20px;
+      }
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 8px 0;
+        border-bottom: 1px dashed #ddd;
+      }
+      .stat-value {
+        font-weight: 600;
+        color: #4a6fc7;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      #start-btn {
+        background: #4caf50;
+        color: white;
+      }
+      #start-btn:hover {
+        background: #3d8b40;
+      }
+      #reset-btn {
+        background: #f44336;
+        color: white;
+      }
+      #reset-btn:hover {
+        background: #d32f2f;
+      }
+      #analyze-btn {
+        background: #2196f3;
+        color: white;
+      }
+      #analyze-btn:hover {
+        background: #0b7dda;
+      }
+      .results {
+        margin-top: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+      .results h2 {
+        color: #4a6fc7;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .chart-container {
+        height: 200px;
+        margin: 20px 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 8px;
+      }
+      .chart-bar {
+        width: 60px;
+        background: linear-gradient(to top, #4a6fc7, #6a11cb);
+        border-radius: 5px 5px 0 0;
+        position: relative;
+        transition: height 1s ease-in-out;
+      }
+      .chart-label {
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+      .summary {
+        line-height: 1.6;
+        margin-top: 20px;
+      }
+      .summary p {
+        margin-bottom: 10px;
+      }
+      .key-point {
+        font-weight: 600;
+        color: #4a6fc7;
+      }
+      footer {
+        text-align: center;
+        margin-top: 20px;
+        color: white;
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+      @media (max-width: 768px) {
+        .main-content {
+          flex-direction: column;
+        }
+        .editor-section {
+          border-right: none;
+          border-bottom: 1px solid #eee;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>写作过程分析工具</h1>
+        <p class="subtitle">记录和分析学生的写作过程与习惯</p>
+      </header>
+
+      <div class="main-content">
+        <section class="editor-section">
+          <h2 class="section-title">写作区域</h2>
+          <textarea
+            id="writing-area"
+            placeholder="请在此处开始写作..."
+          ></textarea>
+
+          <div class="controls">
+            <button id="start-btn">开始记录</button>
+            <button id="reset-btn">重置</button>
+            <button id="analyze-btn">分析写作过程</button>
+          </div>
+        </section>
+
+        <section class="stats-section">
+          <h2 class="section-title">实时数据</h2>
+
+          <div class="stats">
+            <div class="stat-item">
+              <span>写作时间：</span>
+              <span id="time-elapsed" class="stat-value">0秒</span>
+            </div>
+            <div class="stat-item">
+              <span>总字数：</span>
+              <span id="total-chars" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span>当前输入速度：</span>
+              <span id="typing-speed" class="stat-value">0字/分钟</span>
+            </div>
+            <div class="stat-item">
+              <span>删除次数：</span>
+              <span id="deletion-count" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span>停顿次数：</span>
+              <span id="pause-count" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span>最长停顿：</span>
+              <span id="longest-pause" class="stat-value">0秒</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="results" class="results">
+        <h2>写作过程分析报告</h2>
+
+        <div class="chart-container">
+          <div class="chart-bar" style="height: 40%">
+            <span class="chart-label">速度</span>
+          </div>
+          <div class="chart-bar" style="height: 65%">
+            <span class="chart-label">修改率</span>
+          </div>
+          <div class="chart-bar" style="height: 30%">
+            <span class="chart-label">停顿</span>
+          </div>
+          <div class="chart-bar" style="height: 50%">
+            <span class="chart-label">流畅度</span>
+          </div>
+          <div class="chart-bar" style="height: 70%">
+            <span class="chart-label">完成度</span>
+          </div>
+        </div>
+
+        <div class="summary">
+          <p>
+            本次写作总时长：<span class="key-point" id="total-time"
+              >5分28秒</span
+            >
+          </p>
+          <p>
+            平均输入速度：<span class="key-point" id="avg-speed"
+              >32字/分钟</span
+            >
+          </p>
+          <p>
+            删除与添加比例：<span class="key-point" id="edit-ratio">1:4.5</span>
+          </p>
+          <p>
+            写作流畅度评分：<span class="key-point" id="fluency-score"
+              >78/100</span
+            >
+          </p>
+          <p>
+            分析说明：<span id="analysis-note"
+              >该学生写作速度中等，修改频率适中，表现出一定的写作规划能力。最长停顿发生在写作中期，可能是在组织后续内容。</span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>写作过程分析工具 &copy; 2023 - 用于教育研究</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const writingArea = document.getElementById("writing-area");
+        const startBtn = document.getElementById("start-btn");
+        const resetBtn = document.getElementById("reset-btn");
+        const analyzeBtn = document.getElementById("analyze-btn");
+        const results = document.getElementById("results");
+
+        const timeElapsed = document.getElementById("time-elapsed");
+        const totalChars = document.getElementById("total-chars");
+        const typingSpeed = document.getElementById("typing-speed");
+        const deletionCount = document.getElementById("deletion-count");
+        const pauseCount = document.getElementById("pause-count");
+        const longestPause = document.getElementById("longest-pause");
+
+        let startTime;
+        let lastActivityTime;
+        let pauseStartTime;
+        let isPaused = false;
+        let deletions = 0;
+        let pauses = 0;
+        let longestPauseDuration = 0;
+        let timerInterval;
+        let typingStartTime;
+        let charCount = 0;
+
+        // 初始化禁用文本区域和按钮
+        writingArea.disabled = true;
+        analyzeBtn.disabled = true;
+
+        // 开始记录
+        startBtn.addEventListener("click", function () {
+          writingArea.disabled = false;
+          writingArea.focus();
+          startBtn.disabled = true;
+          analyzeBtn.disabled = false;
+
+          // 初始化计时器
+          startTime = new Date();
+          lastActivityTime = startTime;
+          typingStartTime = startTime;
+
+          timerInterval = setInterval(updateTimer, 1000);
+        });
+
+        // 重置
+        resetBtn.addEventListener("click", function () {
+          writingArea.value = "";
+          writingArea.disabled = true;
+          startBtn.disabled = false;
+          analyzeBtn.disabled = true;
+          results.style.display = "none";
+
+          // 重置所有指标
+          clearInterval(timerInterval);
+          timeElapsed.textContent = "0秒";
+          totalChars.textContent = "0";
+          typingSpeed.textContent = "0字/分钟";
+          deletionCount.textContent = "0";
+          pauseCount.textContent = "0";
+          longestPause.textContent = "0秒";
+
+          startTime = null;
+          lastActivityTime = null;
+          pauseStartTime = null;
+          isPaused = false;
+          deletions = 0;
+          pauses = 0;
+          longestPauseDuration = 0;
+          charCount = 0;
+        });
+
+        // 分析写作过程
+        analyzeBtn.addEventListener("click", function () {
+          // 模拟分析结果 - 在实际应用中，这里会使用真实收集的数据
+          document.getElementById("total-time").textContent = "5分28秒";
+          document.getElementById("avg-speed").textContent = "32字/分钟";
+          document.getElementById("edit-ratio").textContent = "1:4.5";
+          document.getElementById("fluency-score").textContent = "78/100";
+
+          results.style.display = "block";
+        });
+
+        // 更新计时器
+        function updateTimer() {
+          if (!startTime) return;
+
+          const now = new Date();
+          const elapsedSeconds = Math.floor((now - startTime) / 1000);
+          const minutes = Math.floor(elapsedSeconds / 60);
+          const seconds = elapsedSeconds % 60;
+
+          timeElapsed.textContent = `${minutes}分${seconds}秒`;
+
+          // 检查是否停顿（超过5秒无活动）
+          const inactivityTime = now - lastActivityTime;
+          if (inactivityTime > 5000 && !isPaused) {
+            pauseStartTime = now;
+            isPaused = true;
+            pauses++;
+            pauseCount.textContent = pauses;
+          }
+
+          if (isPaused) {
+            const currentPauseDuration = Math.floor(
+              (now - pauseStartTime) / 1000
+            );
+            if (currentPauseDuration > longestPauseDuration) {
+              longestPauseDuration = currentPauseDuration;
+              longestPause.textContent = `${longestPauseDuration}秒`;
+            }
+          }
+
+          // 更新输入速度（每分钟字数）
+          const typingTimeMinutes = (now - typingStartTime) / 60000;
+          const currentSpeed = Math.round(charCount / typingTimeMinutes);
+          typingSpeed.textContent = `${
+            isNaN(currentSpeed) ? 0 : currentSpeed
+          }字/分钟`;
+        }
+
+        // 监听键盘事件
+        writingArea.addEventListener("keydown", function (e) {
+          const now = new Date();
+
+          // 检测删除键
+          if (e.key === "Backspace" || e.key === "Delete") {
+            deletions++;
+            deletionCount.textContent = deletions;
+          }
+
+          // 重置停顿检测
+          if (isPaused) {
+            isPaused = false;
+            // 记录这次停顿
+            const pauseDuration = Math.floor((now - pauseStartTime) / 1000);
+            if (pauseDuration > longestPauseDuration) {
+              longestPauseDuration = pauseDuration;
+              longestPause.textContent = `${longestPauseDuration}秒`;
+            }
+          }
+
+          lastActivityTime = now;
+        });
+
+        // 监听输入事件
+        writingArea.addEventListener("input", function () {
+          charCount = writingArea.value.length;
+          totalChars.textContent = charCount;
+        });
+      });
+    </script>
+  </body>
+</html>
