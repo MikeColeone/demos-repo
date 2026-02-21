@@ -8,10 +8,23 @@
     </main>
     <footer>
       <p>Footer</p>
+      <button @click="goToTable">开始体验</button>
+      <button @click="goToAbout">关于</button>
     </footer>
   </div>
 </template>
 
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const goToAbout = () => {
+  router.push('/')
+}
+const goToTable = () => {
+  router.push('/table')
+}
+</script>
 
 <style scoped>
 header {
