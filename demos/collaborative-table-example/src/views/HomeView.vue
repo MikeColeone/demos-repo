@@ -1,15 +1,28 @@
 <template>
   <div>
     <header>
-      <h1>Home</h1>
+      <h1>协同表格系统</h1>
+      <p>多人实时在线编辑</p>
     </header>
     <main>
-      <p>Welcome to the home page</p>
+      <div class="card">
+        <p>实时协同</p>
+        <p>多人在线编辑同一张表格，实时同步修改内容。</p>
+      </div>
+      <div class="card">
+        <p>冲突解决</p>
+        <p>智能算法保持数据一致性。</p>
+      </div>
     </main>
     <footer>
-      <p>Footer</p>
       <button @click="goToTable">开始体验</button>
-      <button @click="goToAbout">关于</button>
+      <button @click="goToAbout">了解更多</button>
+      <div>
+        <p>vue3</p>
+        <p>vite</p>
+        <p>piana</p>
+        <p>Vue router</p>
+      </div>
     </footer>
   </div>
 </template>
@@ -19,7 +32,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const goToAbout = () => {
-  router.push('/')
+  router.push('/about')
 }
 const goToTable = () => {
   router.push('/table')

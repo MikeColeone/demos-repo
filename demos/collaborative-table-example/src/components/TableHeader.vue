@@ -6,7 +6,7 @@
       <div class="user-avatars">
         <div
           v-for="user in onlineUsers"
-          :key="user.id"
+          :key="user?.id"
           class="user-avatar"
           :style="{ backgroundColor: user.color }"
           :title="user.name"
@@ -19,13 +19,10 @@
 </template>
 
 <script lang="ts" setup>
-import type { User } from '@/type'
-interface OnlineUser extends User {
-  color: string
-}
-
-defineProps<{
-  onlineUsers: OnlineUser[]
-  onlineCount: number
-}>()
+defineProps({
+  onlineUsers: Array<any>,
+  onlineCount: Number,
+})
 </script>
+
+<style scoped></style>
